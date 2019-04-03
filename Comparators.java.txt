@@ -1,0 +1,130 @@
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+enum Duration
+{
+    quaterly,halfyearly,yearly;
+}
+
+class Insurance
+{
+    int p_no,amt_paid;
+    String adrs,p_h_name;
+    Duration d;
+    
+    public Insurance getData(int num,int amount,String address,String p_name,Duration d)
+    {
+        p_no=num;
+        amt_paid=amount;
+        adrs=address;
+        p_h_name=p_name;
+        this.d=d;
+        
+        return this;
+    }
+    
+    public String toString() 
+    { 
+        return this.p_no + " " + this.amt_paid + " " + this.adrs + " " + this.p_h_name + " " +this.d;  
+    } 
+    
+    
+}
+
+class SortingByNum implements Comparator<Insurance> 
+{ 
+    
+    public int compare(Insurance a, Insurance b) 
+    { 
+        return a.p_no - b.p_no; 
+    } 
+} 
+
+class SortingByName implements Comparator<Insurance> 
+{ 
+    
+    public int compare(Insurance a, Insurance b) 
+    { 
+        return a.p_h_name.compareTo(b.p_h_name);
+    } 
+}
+
+class SortingByAmount implements Comparator<Insurance> 
+{ 
+    
+    public int compare(Insurance a, Insurance b) 
+    { 
+        return a.amt_paid - b.amt_paid; 
+    } 
+}
+
+class SortingByDuration implements Comparator<Insurance> 
+{ 
+    
+    public int compare(Insurance a, Insurance b) 
+    { 
+        return a.d.compareTo(b.d);
+    } 
+}
+
+class Policy {
+                public static void main (String[] args) throws Exception {
+                
+                 Insurance obj=new Insurance();
+                BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
+                OutputStream out=new BufferedOutputStream(System.out);
+                
+                 ArrayList<Insurance> ob=new ArrayList<>();
+                
+                 int num,amount;
+                String address,p_name,duration;
+                
+                 out.write("Enter the no. of entries you want:".getBytes());
+                int n=Integer.parseInt(in.readLine());
+                
+                 for(int i=0;i<n;i++)
+                  {
+                      out.write("Enter Policy Number:".getBytes());
+                       num=Integer.parseInt(in.readLine());
+                      
+                      out.write("Enter Policy Holder Name:".getBytes());
+                       p_name=in.readLine();
+                      
+                      out.write("Enter Address:".getBytes());
+                       address=in.readLine();
+                      
+                      out.write("Enter Duration:".getBytes());
+                       duration=in.readLine();
+                      
+                      out.write("Enter amount:\n".getBytes());
+                       amount=Integer.parseInt(in.readLine());
+                      
+                    ob.add(new Insurance().getData(num,amount,address,p_name,Duration.valueOf(duration)));  
+                  }
+                out.write("Enter the way u want it to be sorted(1-sorted by id,2-sorted by name,3-sorted by amount,4-sorted by duration):".getBytes());
+                int val=Integer.parseInt(in.readLine());
+                switch(val)
+                {
+                     case 1:Collections.sort(ob,new SortingByNum());
+                      break;
+                     case 2:Collections.sort(ob,new SortingByName());
+                      break;
+                     case 3:Collections.sort(ob,new SortingByAmount());
+                      break;
+                     case 4:Collections.sort(ob,new SortingByDuration());
+                      break;
+                     default:out.write("wrong input".getBytes());
+                      break;
+                }
+                  
+                 
+                  for(Insurance o:ob)         {
+                       out.write((o+"\n").getBytes());
+                   }
+                
+                 out.flush();
+                out.close();
+                                
+                }
+}
